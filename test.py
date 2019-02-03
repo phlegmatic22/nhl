@@ -1,9 +1,14 @@
-
+#!/usr/bin/env python
 from requests import get
 from requests.exceptions import RequestException
 from contextlib import closing
 from bs4 import BeautifulSoup
 import datetime
+from sense_hat import SenseHat
+sense = SenseHat()
+from time import sleep
+yellow = (255, 0, 255)
+blue = (0, 0, 0)
 
 def simple_get(url):
     """
@@ -82,7 +87,7 @@ html = BeautifulSoup(raw_html, 'html.parser')
 for i, td in enumerate(html.select('tbody')):
         #for x in td.contents :
         if i == 4:
-            print(td.contents[1].contents)
+            #print(td.contents[1].contents)
             sb_pvm = td.contents[1].contents[3].contents[1].text
             sb_maalit = td.contents[1].contents[5].contents[1].text
             sb_syotot = td.contents[1].contents[7].contents[1].text
@@ -93,7 +98,7 @@ html = BeautifulSoup(raw_html, 'html.parser')
 for i, td in enumerate(html.select('tbody')):
         #for x in td.contents :
         if i == 4:
-            print(td.contents[1].contents)
+            #print(td.contents[1].contents)
             pl_pvm = td.contents[1].contents[3].contents[1].text
             pl_maalit = td.contents[1].contents[5].contents[1].text
             pl_syotot = td.contents[1].contents[7].contents[1].text
@@ -104,7 +109,7 @@ html = BeautifulSoup(raw_html, 'html.parser')
 for i, td in enumerate(html.select('tbody')):
         #for x in td.contents :
         if i == 4:
-            print(td.contents[1].contents)
+            #print(td.contents[1].contents)
             mr_pvm = td.contents[1].contents[3].contents[1].text
             mr_maalit = td.contents[1].contents[5].contents[1].text
             mr_syotot = td.contents[1].contents[7].contents[1].text
@@ -127,5 +132,11 @@ if mr_pvm_d != pvm_today:
     mr_log = 'MR:' + mr_maalit + '+' + mr_syotot + ' '
     logs.append(mr_log)
 
-print(logs)
-
+sense.show_message(logs[0], text_colour=yellow, back_colour=blue, scroll_speed=0.08)
+sleep(0.5)
+sense.show_message(logs[1], text_colour=yellow, back_colour=blue, scroll_speed=0.08)
+sleep(0.5)
+sense.show_message(logs[2], text_colour=yellow, back_colour=blue, scroll_speed=0.08)
+sleep(0.5)
+sense.show_message(logs[3], text_colour=yellow, back_colour=blue, scroll_speed=0.08)
+sleep(0.5)
