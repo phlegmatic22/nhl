@@ -9,6 +9,9 @@ sense = SenseHat()
 from time import sleep
 yellow = (255, 0, 255)
 blue = (0, 0, 0)
+api_key = "8YFEPN93TABa4yar5VXpfw7qKUV8ig"
+
+#def get_time():
 
 def simple_get(url):
     """
@@ -49,6 +52,7 @@ def log_error(e):
 def return_month(mo):
     mo_mo = mo.split(' ')[0]
     mo_day = int(mo.split(' ')[1])
+
     """
     It is always a good idea to log errors. 
     This function just prints them, but you can
@@ -87,10 +91,10 @@ html = BeautifulSoup(raw_html, 'html.parser')
 for i, td in enumerate(html.select('tbody')):
         #for x in td.contents :
         if i == 4:
-            #print(td.contents[1].contents)
-            sb_pvm = td.contents[1].contents[3].contents[1].text
-            sb_maalit = td.contents[1].contents[5].contents[1].text
-            sb_syotot = td.contents[1].contents[7].contents[1].text
+            print(td.contents[1].contents)
+            sa_pvm = td.contents[1].contents[3].contents[1].text
+            sa_maalit = td.contents[1].contents[5].contents[1].text
+            sa_syotot = td.contents[1].contents[7].contents[1].text
 
 raw_html = simple_get('https://www.nhl.com/player/patrik-laine-8479339')
 html = BeautifulSoup(raw_html, 'html.parser')
@@ -98,7 +102,6 @@ html = BeautifulSoup(raw_html, 'html.parser')
 for i, td in enumerate(html.select('tbody')):
         #for x in td.contents :
         if i == 4:
-            #print(td.contents[1].contents)
             pl_pvm = td.contents[1].contents[3].contents[1].text
             pl_maalit = td.contents[1].contents[5].contents[1].text
             pl_syotot = td.contents[1].contents[7].contents[1].text
@@ -109,34 +112,31 @@ html = BeautifulSoup(raw_html, 'html.parser')
 for i, td in enumerate(html.select('tbody')):
         #for x in td.contents :
         if i == 4:
-            #print(td.contents[1].contents)
             mr_pvm = td.contents[1].contents[3].contents[1].text
             mr_maalit = td.contents[1].contents[5].contents[1].text
             mr_syotot = td.contents[1].contents[7].contents[1].text
 
-sb_pvm_d = return_month(pl_pvm)
+sa_pvm_d = return_month(sa_pvm)
 pl_pvm_d = return_month(pl_pvm)
 mr_pvm_d = return_month(mr_pvm)
+print(sa_pvm_d)
 pvm_today = datetime.date.today()
-sb_log =''
+sa_log =''
 pl_log =''
 mr_log =''
 logs = ['NHL ... ']
-if sb_pvm_d != pvm_today:
-    sb_log = 'SB:' + sb_maalit + '+' + sb_syotot + ' '
-    logs.append(sb_log)
-if pl_pvm_d != pvm_today:
+if sa_pvm_d == pvm_today.replace(day = 3):
+    sa_log = 'SA:' + sa_maalit + '+' + sa_syotot + ' '
+    logs.append(sa_log)
+if pl_pvm_d == pvm_today:
     pl_log = 'PL:' + pl_maalit + '+' + pl_syotot + ' '
     logs.append(pl_log)
-if mr_pvm_d != pvm_today:
+if mr_pvm_d == pvm_today:
     mr_log = 'MR:' + mr_maalit + '+' + mr_syotot + ' '
     logs.append(mr_log)
+print(logs)
+for i in logs:
+    
+    sense.show_message(i, text_colour=yellow, back_colour=blue, scroll_speed=0.08)
+    sleep(0.5)
 
-sense.show_message(logs[0], text_colour=yellow, back_colour=blue, scroll_speed=0.08)
-sleep(0.5)
-sense.show_message(logs[1], text_colour=yellow, back_colour=blue, scroll_speed=0.08)
-sleep(0.5)
-sense.show_message(logs[2], text_colour=yellow, back_colour=blue, scroll_speed=0.08)
-sleep(0.5)
-sense.show_message(logs[3], text_colour=yellow, back_colour=blue, scroll_speed=0.08)
-sleep(0.5)
